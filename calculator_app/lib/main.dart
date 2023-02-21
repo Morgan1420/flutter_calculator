@@ -23,6 +23,41 @@ class BasicCalculator extends StatefulWidget {
 }
 
 class _BasicCalculatorState extends State<BasicCalculator> {
+  String equation = "0";
+  String result = "0";
+  String expression = "";
+  double equationFontSize = 38.0;
+  double resultFontSize = 48.0;
+
+  buttonPressed(String buttonText) {
+    setState(() {
+      if (buttonText == "C") {
+        equation = "0";
+        result = "0";
+        equationFontSize = 38.0;
+        resultFontSize = 48.0;
+      } else if (buttonText == "⌫") {
+        equationFontSize = 48.0;
+        resultFontSize = 38.0;
+        equation = equation.substring(0, equation.length - 1);
+        if (equation == "") {
+          equation = "0";
+        }
+      } else if (buttonText == "=") {
+        equationFontSize = 38.0;
+        resultFontSize = 48.0;
+      } else {
+        equationFontSize = 48.0;
+        resultFontSize = 38.0;
+        if (equation == "0") {
+          equation = buttonText;
+        } else {
+          equation = equation + buttonText;
+        }
+      }
+    });
+  }
+
   Widget buildButton(
       String buttonText, double buttonHeight, Color buttonColor) {
     return Container(
@@ -30,7 +65,7 @@ class _BasicCalculatorState extends State<BasicCalculator> {
       color: buttonColor,
       child: TextButton(
         style: flatButtonStyle,
-        onPressed: null,
+        onPressed: () => buttonPressed(buttonText),
         child: Text(
           buttonText,
           style: TextStyle(
@@ -53,16 +88,16 @@ class _BasicCalculatorState extends State<BasicCalculator> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
             child: Text(
-              "0",
-              style: TextStyle(fontSize: 38.0),
+              equation,
+              style: TextStyle(fontSize: equationFontSize),
             ),
           ),
           Container(
             alignment: Alignment.centerRight,
             padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
             child: Text(
-              "0",
-              style: TextStyle(fontSize: 48.0),
+              result,
+              style: TextStyle(fontSize: resultFontSize),
             ),
           ),
           Expanded(
@@ -117,7 +152,7 @@ class _BasicCalculatorState extends State<BasicCalculator> {
                       buildButton("+", 1, Colors.deepOrange),
                     ]),
                     TableRow(children: [
-                      buildButton("=", 2, Colors.black87),
+                      buildButton("=", 2, Colors.black54),
                     ]),
                   ],
                 ),
@@ -133,6 +168,6 @@ class _BasicCalculatorState extends State<BasicCalculator> {
 final ButtonStyle flatButtonStyle = TextButton.styleFrom(
   padding: EdgeInsets.all(16.0),
   shape: const RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+    borderRadius: BorderRadius.all(Radius.circular(0.0)),
   ),
 );
