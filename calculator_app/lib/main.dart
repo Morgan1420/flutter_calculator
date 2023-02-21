@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 void main() {
   runApp(Calculator());
@@ -46,6 +47,20 @@ class _BasicCalculatorState extends State<BasicCalculator> {
       } else if (buttonText == "=") {
         equationFontSize = 38.0;
         resultFontSize = 48.0;
+
+        expression = equation;
+        expression = expression.replaceAll('x', '*');
+        expression = expression.replaceAll('÷', '/');
+
+        try {
+          Parser p = Parser();
+          Expression exp = p.parse(expression);
+
+          ContextModel cm = ContextModel();
+          result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+        } catch (e) {
+          result = "Error";
+        }
       } else {
         equationFontSize = 48.0;
         resultFontSize = 38.0;
